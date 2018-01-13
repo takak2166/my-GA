@@ -12,13 +12,18 @@ random.seed(1) #乱数の種を作っておく
 for i in range(NBR_ITEMS):  #ランダムにアイテムを生成 前者が重さで後者が価値(不動点小数で定義)
     items[i] = (random.randint(1, 10), random.uniform(0, 100))
 
-def dp(i, w):
-    if i==w:
-        return 0
-    elif w >= items[i][0]:
-        return max(dp(i-1, w-items[i][0])+items[i][1], dp(i-1, w))
-    else:
-        return dp(i-1, w)
-
 if __name__ == '__main__':
-    print dp(NBR_ITEMS-1, MAX_WEIGHT)
+
+    dp = [[0 for i in range(MAX_WEIGHT+1)] for j in range(NBR_ITEMS)]
+
+    for w in range(MAX_WEIGHT+1): #dpの初期化
+        dp[0][w] = 0
+
+    for i in range(NBR_ITEMS-1):
+        for w in range(MAX_WEIGHT+1):
+            if w >= items[i][0]:
+                dp[i+1][w] =  max(dp[i][w-items[i][0]]+items[i][1], dp[i][w])
+            else:
+                dp[i+1][w] = dp[i][w]
+
+    print dp[NBR_ITEMS-1][MAX_WEIGHT]
