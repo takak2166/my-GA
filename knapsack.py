@@ -16,11 +16,13 @@ creator.create("Individual", set, fitness=creator.Fitness)
 
 #アイテムの重さと体積をランダムに決める
 NBR_ITEMS = 30
-IND_INIT_SIZE = 10
-MAX_ITEM = 50
-MAX_WEIGHT = 100
+IND_INIT_SIZE = 5
+#MAX_ITEM = 3
+MAX_WEIGHT = 50
 
 items = {}
+
+random.seed(1) #乱数の種を作っておく
 
 for i in range(NBR_ITEMS):
     items[i] = (random.randint(1, 10), random.uniform(0, 100))
@@ -40,13 +42,13 @@ def evalknapsack(individual):
     for item in individual:
         weight += items[item][0]
         value += items[item][1]
-    if len(individual) > MAX_ITEM or weight > MAX_WEIGHT:
+    if weight > MAX_WEIGHT:
         return 10000, 0
     return weight, value
 
 def cxSet(ind1, ind2):
-    """交叉を適用する. 1番目の子は二つのセットの交叉で
-    2番目の子は違う二つのセットの交叉.
+    """1番目の子は二つのセットの交叉(AND)で
+    2番目の子は違う二つのセットの交叉(XOR).
     """
     temp = set(ind1)
     ind1 &= ind2
@@ -72,15 +74,15 @@ toolbox.register("mutate", mutSet)
 toolbox.register("select", tools.selNSGA2)
 
 def main():
-    NGEN = 50
-    MU = 50
-    LAMBDA = 10000
-    CXPB = 0.7
-    MUTPB = 0.2
+    NGEN = 50   #世代数
+    MU = 100    #集団の数
+    LAMBDA = 200    #子供の数
+    CXPB = 0.7  #交叉率
+    MUTPB = 0.2 #突然変異率
 
     pop = toolbox.population(n=MU)
-    hof = tools.ParetoFront()
-    stats = tools.Statistics(lambda ind: ind.fitness.values)
+    hof = tools.ParetoFront()   #進化の中で最も優れている個体を保存
+    stats = tools.Statistics(lambda ind: ind.fitness.values) #4つの異なる統計量をまとめる
     stats.register("avg", numpy.mean, axis=0)
     stats.register("std", numpy.std, axis=0)
     stats.register("min", numpy.min, axis=0)

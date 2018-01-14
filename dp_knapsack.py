@@ -3,9 +3,10 @@
 import random
 
 NBR_ITEMS = 30
-MAX_WEIGHT = 10
+MAX_WEIGHT = 50
 
 items = {}
+selected = [] #選ばれたアイテムを保持する
 
 random.seed(1) #乱数の種を作っておく
 
@@ -23,7 +24,11 @@ if __name__ == '__main__':
         for w in range(MAX_WEIGHT+1):
             if w >= items[i][0]:
                 dp[i+1][w] =  max(dp[i][w-items[i][0]]+items[i][1], dp[i][w])
+                if selected.count(items[i]) == 0:
+                    selected.append(items[i])
+
             else:
                 dp[i+1][w] = dp[i][w]
 
     print dp[NBR_ITEMS-1][MAX_WEIGHT]
+    print selected

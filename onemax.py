@@ -50,7 +50,6 @@ if __name__ == '__main__': # 直接実行されたらモジュール名が__main
     print(" %i の個体を評価" %len(pop))
 
     #ここで1回plotする
-
     fig, ax = plt.subplots(1, 1)
     x = np.arange(0)
     y = np.array([])
