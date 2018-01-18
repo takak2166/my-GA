@@ -114,7 +114,7 @@ def main():
     x = np.arange(0)
     y = np.array([])
     ax.set_xlim(0, NGEN)
-    ax.set_ylim(0, 800)
+    ax.set_ylim(0, 950)
     lines, = ax.plot(x, y)
 
     # 進化計算開始
