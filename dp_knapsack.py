@@ -17,18 +17,37 @@ if __name__ == '__main__':
 
     dp = [[0 for i in range(MAX_WEIGHT+1)] for j in range(NBR_ITEMS)]
 
-    for w in range(MAX_WEIGHT+1): #dpの初期化
-        dp[0][w] = 0
+    for i in range(NBR_ITEMS): #dpの初期化
+        dp[i][0] = 0
+    for  k in range(MAX_WEIGHT+1):
+        if k < items[0][0]:
+            dp[0][k] = 0
+        else:
+            dp[0][k] = items[0][0]
 
     for i in range(NBR_ITEMS-1):
         for w in range(MAX_WEIGHT+1):
             if w >= items[i][0]:
                 dp[i+1][w] =  max(dp[i][w-items[i][0]]+items[i][1], dp[i][w])
-                if selected.count(items[i]) == 0:
-                    selected.append(items[i])
-
             else:
                 dp[i+1][w] = dp[i][w]
 
+    # どのアイテムを選んだか確かめる
+    w = MAX_WEIGHT
+    for i in range(NBR_ITEMS)[:0:-1]:
+        if w == 0:
+            break
+        if dp[i][w] != dp[i-1][w] :
+            selected.append(items[i-1])
+            w -= items[i-1][0]
+
     print dp[NBR_ITEMS-1][MAX_WEIGHT]
     print selected
+    print len(selected)
+    w_sum = 0
+    v_sum = 0.0
+    for i in selected:
+        w_sum += i[0]
+        v_sum += i[1]
+    print w_sum
+    print v_sum
