@@ -95,8 +95,8 @@ def main():
     NGEN = 100  # 世代数
     MU = 200  # 集団の数
     LAMBDA = 100  # 子供の数
-    CXPB = 0.7  # 交叉率
-    MUTPB = 0.2  # 突然変異率
+    CXPB = 0.6  # 交叉率
+    MUTPB = 0.3  # 突然変異率
 
     pop = toolbox.population(n=MU)
     # print pop
@@ -125,11 +125,11 @@ def main():
         # 選択
         offspring = toolbox.select(pop, len(pop))
         offspring = list(map(toolbox.clone, offspring))
-        #print offspring
+        # print offspring
 
         # 交叉
         #  上位1%以内は保持
-        for child1, child2 in zip(offspring[MU/100::2], offspring[MU/100+1::2]):
+        for child1, child2 in zip(offspring[MU / 100::2], offspring[MU / 100 + 1::2]):
             if random.random() < CXPB:
                 toolbox.mate(child1, child2)
                 # 交叉された個体の適合度を削除
@@ -137,7 +137,7 @@ def main():
                 del child2.fitness.values
 
         # 変異
-        for mutant in offspring[MU/100::]:
+        for mutant in offspring[MU / 100::]:
             if random.random() < MUTPB:
                 toolbox.mutate(mutant)
                 del mutant.fitness.values
@@ -176,11 +176,12 @@ def main():
         plt.pause(.01)
 
     print("--- end --- \n")
-    bests = [ind.fitness.values[0] for ind in hof]
-    print(" Best %s" % max(bests))
 
+    bests = [ind.fitness.values for ind in hof]
     selected_items = [(i, items[i])
                       for i in tuple(hof[bests.index(max(bests))])]
+
+    print(" Best {}".format(max(bests)))
     print(" Selected items ")
     print(selected_items)
 
