@@ -11,7 +11,9 @@ selected = [] #選ばれたアイテムを保持する
 random.seed(1) #乱数の種を作っておく
 
 for i in range(NBR_ITEMS):  #ランダムにアイテムを生成 前者が重さで後者が価値(不動点小数で定義)
-    items[i] = (random.randint(1, 10), random.uniform(0, 100))
+    items[i] = (random.uniform(0, 100), random.randint(1, 10) )
+
+print items
 
 if __name__ == '__main__':
 
@@ -20,15 +22,15 @@ if __name__ == '__main__':
     for i in range(NBR_ITEMS): #dpの初期化
         dp[i][0] = 0
     for  k in range(MAX_WEIGHT+1):
-        if k < items[0][0]:
+        if k < items[0][1]:
             dp[0][k] = 0
         else:
-            dp[0][k] = items[0][0]
+            dp[0][k] = items[0][1]
 
     for i in range(NBR_ITEMS-1):
         for w in range(MAX_WEIGHT+1):
-            if w >= items[i][0]:
-                dp[i+1][w] =  max(dp[i][w-items[i][0]]+items[i][1], dp[i][w])
+            if w >= items[i][1]:
+                dp[i+1][w] =  max(dp[i][w-items[i][1]]+items[i][0], dp[i][w])
             else:
                 dp[i+1][w] = dp[i][w]
 
@@ -39,7 +41,7 @@ if __name__ == '__main__':
             break
         if dp[i][w] != dp[i-1][w] :
             selected.append(items[i-1])
-            w -= items[i-1][0]
+            w -= items[i-1][1]
 
     print dp[NBR_ITEMS-1][MAX_WEIGHT]
     print selected
