@@ -88,7 +88,7 @@ toolbox.register("mate", cxSet)
 # 変異関数を登録
 toolbox.register("mutate", mutSet)
 # 選択関数を登録
-toolbox.register("select", selBest)
+toolbox.register("select", tools.selTournament, tournsize=4)
 
 
 def main():
@@ -184,6 +184,16 @@ def main():
     print(" Best {}".format(max(bests)))
     print(" Selected items ")
     print(selected_items)
+
+    """ 確認用
+    w_sum = 0
+    v_sum = 0.0
+    for i in selected_items:
+        w_sum += i[1][1]
+        v_sum += i[1][0]
+    print w_sum
+    print v_sum
+    """
 
     plt.show()
 
